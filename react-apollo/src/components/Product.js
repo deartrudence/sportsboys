@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import VariantSelector from './VariantSelector';
 
+
 class Product extends Component {
   constructor(props) {
     super(props);
@@ -34,25 +35,23 @@ class Product extends Component {
     const target = event.target
     let selectedOptions = this.state.selectedOptions;
     selectedOptions[target.name] = target.value;
-
+    
     const selectedVariant = this.props.product.variants.edges.find((variant) => {
       return variant.node.selectedOptions.every((selectedOption) => {
         return selectedOptions[selectedOption.name] === selectedOption.value;
       });
     }).node;
-
+    console.log(selectedVariant)
     this.setState({
       selectedVariant: selectedVariant,
       selectedVariantImage: selectedVariant.image.src
     });
   }
-
   handleQuantityChange(event) {
     this.setState({
       selectedVariantQuantity: event.target.value
     });
   }
-
   render() {
     let variantImage = this.state.selectedVariantImage || this.props.product.images.edges[0].node.src
     let variant = this.state.selectedVariant || this.props.product.variants.edges[0].node
@@ -67,15 +66,12 @@ class Product extends Component {
       );
     });
     return (
-      <div className="Product">
+      <div className="Product col--three-margin">
         {this.props.product.images.edges.length ? <img src={variantImage} alt={`${this.props.product.title} product shot`}/> : null}
         <h5 className="Product__title">{this.props.product.title}</h5>
         <span className="Product__price">${variant.price}</span>
         {variant_selectors}
-        <label className="Product__option">
-          Quantity
-          <input min="1" type="number" defaultValue={variantQuantity} onChange={this.handleQuantityChange}></input>
-        </label>
+        <input min="1" type="hidden" defaultValue={variantQuantity} onChange={this.handleQuantityChange}></input>
         <button className="Product__buy button" onClick={() => this.props.addVariantToCart(variant.id, variantQuantity)}>Add to Cart</button>
       </div>
     );

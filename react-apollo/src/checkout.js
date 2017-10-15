@@ -103,6 +103,7 @@ export const checkoutCustomerAssociate = gql`
 `;
 
 export function addVariantToCart(variantId, quantity){
+  console.log('var', this)
   this.props.checkoutLineItemsAdd(
     { variables: { checkoutId: this.state.checkout.id, lineItems:  [{variantId, quantity: parseInt(quantity, 10)}] }
     }).then((res) => {

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Product from './components/Product';
+import Collection from './components/Collection';
 import Cart from './components/Cart';
 import CustomerAuthWithMutation from './components/CustomerAuth';
 import PropTypes from 'prop-types';
@@ -112,35 +113,31 @@ class App extends Component {
 
     return (
       <div className="App">
-        <div className="Flash__message-wrapper">
-          <p className={`Flash__message ${this.state.accountVerificationMessage ? 'Flash__message--open' : ''}`}>We have sent you an email, please click the link included to verify your email address</p>
-        </div>
-        <CustomerAuthWithMutation
-          closeCustomerAuth={this.closeCustomerAuth}
-          isCustomerAuthOpen={this.state.isCustomerAuthOpen}
-          newCustomer={this.state.isNewCustomer}
-          associateCustomerCheckout={this.associateCustomerCheckout}
-          showAccountVerificationMessage={this.showAccountVerificationMessage}
-        />
-        <header className="App__header">
-          <ul className="App__nav">
-            <li className="button App__customer-actions" onClick={this.openCustomerAuth} data-customer-type="new-customer">Create an Account</li>
-            <li className="login App__customer-actions" onClick={this.openCustomerAuth}>Log in</li>
-          </ul>
-          {!this.state.isCartOpen &&
+        <header className="App__header wrapper">
             <div className="App__view-cart-wrapper">
-              <button className="App__view-cart" onClick={()=> this.setState({isCartOpen: true})}>Cart</button>
+              {/* <button className="App__view-cart" onClick={()=> this.setState({isCartOpen: true})}> */}
+              <svg className="App__view-cart" onClick={()=> this.setState({isCartOpen: true})} version="1.1" x="0px" y="0px" viewBox="0 0 100 125" ><g><path d="M65.1,20.4c0-4.5-3.7-8.2-8.2-8.2h-15c-4.5,0-8.2,3.7-8.2,8.2V32H17.4l2.2,61H79l2.2-61H65.1V20.4z M39.6,20.4   c0-1.2,1-2.2,2.2-2.2h15c1.2,0,2.2,1,2.2,2.2V32H39.6V20.4z"/></g></svg>
+              {/* </button> */}
             </div>
-          }
-          <div className="App__title">
-            <h1>{this.props.data.shop.name}: React Example</h1>
-            <h2>{this.props.data.shop.description}</h2>
-          </div>
         </header>
-        <div className="Product-wrapper">
-          { this.props.data.shop.products.edges.map(product =>
-            <Product addVariantToCart={this.addVariantToCart} checkout={this.state.checkout} key={product.node.id.toString()} product={product.node} />
-          )}
+        <div className="header wrapper wrapper--flex wrapper--flex-wrap">
+          <div className=" wrapper--title col--two">
+            <div className="inner--title">
+              <h3>Introducing</h3>
+              <h1>{this.props.data.shop.name}</h1>
+              <p>{this.props.data.shop.description}</p>
+              <button className="button">See Products</button>
+            </div>
+          </div>
+          <div className="wrapper--images col--two">
+            <img src={"http://deartrudence.com/sports_01.jpeg"} alt="" className="boys-1"/>
+            <img src={"http://deartrudence.com/sports_02.jpeg"} alt="" className="boys-2"/>
+          </div>
+        </div>
+        <div className="wrapper  ">
+          { this.props.data.shop.collections.edges.map(collection =>
+            <Collection key={collection.node.id} collection={collection.node} checkout={this.state.checkout} addVariantToCart={this.addVariantToCart} />
+          )} 
         </div>
         <Cart
           removeLineItemInCart={this.removeLineItemInCart}
@@ -160,7 +157,7 @@ const query = gql`
     shop {
       name
       description
-      products(first:20) {
+      products(first:10) {
         pageInfo {
           hasNextPage
           hasPreviousPage
@@ -194,6 +191,14 @@ const query = gql`
                 }
               }
             }
+            collections(first: 10){
+              edges {
+                node{
+                  id
+                  title
+                }
+              }
+            }
             images(first: 250) {
               pageInfo {
                 hasNextPage
@@ -212,13 +217,79 @@ const query = gql`
   }
 `;
 
+const query2 = gql `
+  query query {
+    shop {
+      name
+      description
+      collections(first: 10){
+        edges {
+          node{
+            id
+            title
+            products(first:10) {
+              pageInfo {
+                hasNextPage
+                hasPreviousPage
+              }
+              edges {
+                node {
+                  id
+                  title
+                  options {
+                    id
+                    name
+                    values
+                  }
+                  variants(first: 250) {
+                    pageInfo {
+                      hasNextPage
+                      hasPreviousPage
+                    }
+                    edges {
+                      node {
+                        id
+                        title
+                        selectedOptions {
+                          name
+                          value
+                        }
+                        image {
+                          src
+                        }
+                        price
+                        
+                      }
+                    }            
+                  }
+                  images(first: 250) {
+                    pageInfo {
+                      hasNextPage
+                      hasPreviousPage
+                    }
+                    edges {
+                      node {
+                        src
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  } 
+`
 const AppWithDataAndMutation = compose(
-  graphql(query),
+  graphql(query2),
   graphql(createCheckout, {name: "createCheckout"}),
   graphql(checkoutLineItemsAdd, {name: "checkoutLineItemsAdd"}),
   graphql(checkoutLineItemsUpdate, {name: "checkoutLineItemsUpdate"}),
   graphql(checkoutLineItemsRemove, {name: "checkoutLineItemsRemove"}),
   graphql(checkoutCustomerAssociate, {name: "checkoutCustomerAssociate"})
 )(App);
+
 
 export default AppWithDataAndMutation;

@@ -9,6 +9,7 @@ class VariantSelector extends Component {
         key={this.props.option.name}
         onChange={this.props.handleOptionChange}
       >
+        <option value='null' key="placeholder">{`Choose ${this.props.option.name}`}</option>
         {this.props.option.values.map((value) => {
           return (
             <option value={value} key={`${this.props.option.name}-${value}`}>{`${value}`}</option>
