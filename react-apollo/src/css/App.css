@@ -24,10 +24,12 @@ html {
       margin: 0 auto; } }
   @media screen and (max-width: 499px) {
     .wrapper {
-      margin: 0;
+      margin: 0 auto;
       padding: 0 12px; } }
   .wrapper--flex {
-    display: flex; }
+    display: flex;
+    margin: 0 auto; 
+  }
     .wrapper--flex-wrap {
       align-items: stretch;
       flex-wrap: wrap;
@@ -87,7 +89,10 @@ html {
   @media screen and (max-width: 499px) {
     .wrapper .col--three, .wrapper--flex .col--three {
       box-sizing: border-box;
-      width: 100%; } }
+      width: 100%;
+      margin-bottom: 40px; 
+    } 
+  }
 
 @media screen and (min-width: 1170px) {
   .wrapper .col--three-margin, .wrapper--flex .col--three-margin {
@@ -116,7 +121,10 @@ html {
 @media screen and (max-width: 499px) {
   .wrapper .col--three-margin, .wrapper--flex .col--three-margin {
     box-sizing: border-box;
-    width: 100%; } }
+    width: 100%; 
+    margin-bottom: 40px;
+  } 
+}
 
 .wrapper .col--four, .wrapper--flex .col--four {
   box-sizing: border-box;
@@ -319,10 +327,38 @@ img {
     padding: 14px 24px;
     font-size: 2.2rem;
     font-family: 'Roboto';
-    margin-bottom: 20px; }
+    margin-bottom: 20px; 
+    cursor: pointer;
+    transition: 0.3s all ease;
+  }.wrapper--title .button:hover {
+    border: 1px solid #222222;
+    background-color: #222222;
+  }
   .wrapper--title .inner--title {
     padding-top: 120px;
-    padding-left: 100px; }
+    padding-left: 100px; 
+  }
+   @media screen and (max-width: 499px) {
+     .wrapper--title .inner--title {
+      padding-top: 0;
+      padding-left: 0; 
+    }
+    .wrapper--title h1 {
+      width: 100%;
+      font-size: 7rem;
+    }
+    .wrapper--title p{
+      margin-top: 5%;
+      width: 100%;
+      margin-bottom: 20px;
+    }
+    .wrapper--title .button {
+      margin: 0 auto;
+      margin-bottom: 44px;
+      display: block;
+    }
+
+   }
 
 .wrapper--images {
   text-align: right; }
@@ -343,6 +379,12 @@ img {
 .App__header {
   background-color: white;
   color: #2a47d4; }
+
+  @media(max-width: 499px){
+    .App__header{
+      margin: 0 auto;
+    }
+  }
 
 .App__nav {
   width: 100%;
@@ -376,6 +418,13 @@ img {
   font-size: 1.3rem;
   opacity: 0.5;
   margin-bottom: 0.4rem; }
+
+  @media(max-width: 499px){
+    .Product__price{
+      font-size: 1.8rem;
+      padding: 10px 0;
+    }
+  }
 
 .Product__option {
   display: block;
@@ -415,7 +464,11 @@ img {
   flex-direction: column;
   border-left: 1px solid #e5e5e5;
   transform: translateX(100%);
-  transition: 0.15s ease-in-out; }
+  transition: 0.15s ease-in-out;
+  box-shadow: 0px 0px 24px rgba(0,0,0,0.2);
+
+
+ }
   .Cart--open {
     transform: translateX(0); }
   .Cart__close {

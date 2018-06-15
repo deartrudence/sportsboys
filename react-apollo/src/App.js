@@ -29,6 +29,7 @@ class App extends Component {
       checkout: { lineItems: { edges: [] } }
     };
 
+    this.seeProducts = this.seeProducts.bind(this);
     this.handleCartClose = this.handleCartClose.bind(this);
     this.handleCartOpen = this.handleCartOpen.bind(this);
     this.openCustomerAuth = this.openCustomerAuth.bind(this);
@@ -62,6 +63,11 @@ class App extends Component {
     checkoutLineItemsUpdate: PropTypes.func.isRequired
   }
 
+  seeProducts() {
+    console.log('see products')
+    var productArea = document.getElementById('product-area')
+    window.scrollTo({ top: (productArea.offsetTop - 20), behavior: 'smooth' })
+  }
   handleCartOpen() {
     this.setState({
       isCartOpen: true,
@@ -126,7 +132,7 @@ class App extends Component {
               <h3>Introducing</h3>
               <h1>{this.props.data.shop.name}</h1>
               <p>{this.props.data.shop.description}</p>
-              <button className="button">See Products</button>
+              <button className="button" onClick={this.seeProducts} >See Products</button>
             </div>
           </div>
           <div className="wrapper--images col--two">
@@ -134,7 +140,7 @@ class App extends Component {
             <img src={"http://deartrudence.com/sports_02.jpeg"} alt="" className="boys-2"/>
           </div>
         </div>
-        <div className="wrapper  ">
+        <div id="product-area" className="wrapper  ">
           { this.props.data.shop.collections.edges.map(collection =>
             <Collection key={collection.node.id} collection={collection.node} checkout={this.state.checkout} addVariantToCart={this.addVariantToCart} />
           )} 
